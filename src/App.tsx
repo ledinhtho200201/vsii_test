@@ -1,5 +1,3 @@
-import SearchFilter from './components/SeachFilter';
-import Stopwatch from './components/StopWatch';
 import TodoList from './components/TodoList';
 import ValidatedInput from './components/ValidatedInput';
 
@@ -16,8 +14,6 @@ const App: React.FC = () => {
         errorMessage="Please enter a valid email address."
       />
       <TodoList />
-      {/* <Stopwatch />
-      <SearchFilter /> */}
     </>
   )
 }
