@@ -10,11 +10,11 @@ const App: React.FC = () => {
 
   return (
     <>
-      <ValidatedInput
+      {/* <ValidatedInput
         validationFn={validateEmail}
         errorMessage="Please enter a valid email address."
       />
-      <TodoList />
+      <TodoList /> */}
       <Test2 />
     </>
   )

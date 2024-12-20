@@ -48,6 +48,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const App: React.FC = () => {
     const dispatch: ThunkDispatch<RootState, unknown, any> = useDispatch<AppDispatch>();
     const { loading, breeds, error } = useSelector((state: RootState) => state.breeds);
+    console.log('ooo', breeds)
 
     useEffect(() => {
         dispatch(fetchBreeds());
@@ -73,50 +74,24 @@ const App: React.FC = () => {
                     </Typography>
                 ) : (
 
-                    //                 <TableContainer component={Paper}>
-                    //   <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                    //     <TableHead>
-                    //       <TableRow>
-                    //       {breeds.map((breed) => (
-                    //                         <ListItem key={breed.id}>
-                    //                             <ListItemText
-                    //                                 primary={breed.attributes.name}
-                    //                                 secondary={breed.attributes.temperament}
-                    //                             />
-                    //                         </ListItem>
-                    //                     ))}
-                    //         <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-                    //         <StyledTableCell align="right">Calories</StyledTableCell>
-                    //         <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-                    //         <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-                    //         <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
-                    //       </TableRow>
-                    //     </TableHead>
-                    //     <TableBody>
-                    //       {rows.map((row) => (
-                    //         <StyledTableRow key={row.name}>
-                    //           <StyledTableCell component="th" scope="row">
-                    //             {row.name}
-                    //           </StyledTableCell>
-                    //           <StyledTableCell align="right">{row.calories}</StyledTableCell>
-                    //           <StyledTableCell align="right">{row.fat}</StyledTableCell>
-                    //           <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-                    //           <StyledTableCell align="right">{row.protein}</StyledTableCell>
-                    //         </StyledTableRow>
-                    //       ))}
-                    //     </TableBody>
-                    //   </Table>
-                    // </TableContainer>
-                    <List>
-                        {breeds.map((breed) => (
-                            <ListItem key={breed.id}>
-                                <ListItemText
-                                    primary={breed.attributes.name}
-                                    secondary={breed.attributes.temperament}
-                                />
-                            </ListItem>
-                        ))}
-                    </List>
+                    <TableContainer component={Paper}>
+                        <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                            <TableHead>
+                                <TableRow>
+                                    <StyledTableCell>Breed name</StyledTableCell>
+                                    <StyledTableCell align="right">Description</StyledTableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {breeds.map((row) => (
+                                    <StyledTableRow key={row.id}>
+                                        <StyledTableCell component="th" scope="row">{row.attributes.name}</StyledTableCell>
+                                        <StyledTableCell component="th" scope="row">{row.attributes.description}</StyledTableCell>
+                                    </StyledTableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
                 )}
             </Container>
         </Box>
