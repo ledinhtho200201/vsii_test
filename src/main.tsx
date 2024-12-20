@@ -6,6 +6,8 @@ import "@fontsource/inter/400.css"; // Regular
 import "@fontsource/inter/500.css"; // Medium
 import "@fontsource/inter/600.css"; // Semi-Bold
 import "@fontsource/inter/700.css"; // Bold
+import { Provider } from 'react-redux';
+import store from './redux/store/store.ts';
 
 const theme = createTheme({
   typography: {
@@ -18,8 +20,10 @@ const theme = createTheme({
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ThemeProvider theme={theme}>
-      <App />
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </Provider>
   </StrictMode>,
 )

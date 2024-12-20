@@ -1,5 +1,6 @@
 import TodoList from './components/TodoList';
 import ValidatedInput from './components/ValidatedInput';
+import Test2 from './components/Test2';
 
 const App: React.FC = () => {
   const validateEmail = (value: string) => {
@@ -14,6 +15,7 @@ const App: React.FC = () => {
         errorMessage="Please enter a valid email address."
       />
       <TodoList />
+      <Test2 />
     </>
   )
 }

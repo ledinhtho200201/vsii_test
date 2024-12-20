@@ -15,7 +15,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 interface Todo {
     id: number;
     text: string;
-    isEditing: boolean;
+    isEditing?: boolean;
 }
 
 const TodoList: React.FC = () => {
