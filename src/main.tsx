@@ -7,7 +7,7 @@ import "@fontsource/inter/500.css"; // Medium
 import "@fontsource/inter/600.css"; // Semi-Bold
 import "@fontsource/inter/700.css"; // Bold
 import { Provider } from 'react-redux';
-import store from './redux/store/store.ts';
+import store from './redux/store.ts';
 
 const theme = createTheme({
   typography: {

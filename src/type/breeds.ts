@@ -1,6 +1,7 @@
 export interface Breed {
   id: string;
   attributes: {
+    description: string;
     name: string;
     temperament?: string;
   };
@@ -27,7 +28,7 @@ interface FetchBreedsSuccessAction {
 
 interface FetchBreedsFailureAction {
   type: typeof FETCH_BREEDS_FAILURE;
-  payload: string | null;
+  payload: string;
 }
 
 export type BreedsAction =

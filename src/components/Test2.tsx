@@ -8,20 +8,17 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBreeds } from "../redux/actions/breedsActions";
-import { RootState, AppDispatch } from "../redux/store/store";
+import { RootState, AppDispatch } from "../redux/store";
 import {
     AppBar,
     Box,
     CircularProgress,
     Container,
-    List,
-    ListItem,
-    ListItemText,
     Typography,
     Toolbar,
 } from "@mui/material";
-import { ThunkDispatch } from "@reduxjs/toolkit";
+import { fetchBreeds } from "../redux/reducers/breedsSlice";
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -43,15 +40,13 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
-
-
 const App: React.FC = () => {
-    const dispatch: ThunkDispatch<RootState, unknown, any> = useDispatch<AppDispatch>();
-    const { loading, breeds, error } = useSelector((state: RootState) => state.breeds);
-    console.log('ooo', breeds)
+    const { loading, breeds, error } = useSelector((state: RootState) => state.breeds)
+    const dispatch = useDispatch<AppDispatch>()
 
     useEffect(() => {
         dispatch(fetchBreeds());
+        console.log('ooo', breeds)
     }, [dispatch]);
 
     return (
