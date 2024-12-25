@@ -1,57 +1,30 @@
-import { styled } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "../redux/store";
-import {
-    AppBar,
-    Box,
-    CircularProgress,
-    Container,
-    Typography,
-    Toolbar,
-} from "@mui/material";
 import { fetchBreeds } from "../redux/reducers/breedsSlice";
+import { AppDispatch, RootState } from "../redux/store";
+import BreedTable from "./BreedTable";
+import PaginationControl from "./PaginationControl";
+import { CircularProgress, Typography, Container, Box, AppBar, Toolbar, LinearProgress } from "@mui/material";
 
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
-    },
-    [`&.${tableCellClasses.body}`]: {
-        fontSize: 14,
-    },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.action.hover,
-    },
-    // hide last border
-    '&:last-child td, &:last-child th': {
-        border: 0,
-    },
-}));
-
-const App: React.FC = () => {
-    const { loading, breeds, error } = useSelector((state: RootState) => state.breeds)
-    const dispatch = useDispatch<AppDispatch>()
+const Test2: React.FC = () => {
+    const { loading, breeds, error, pagination } = useSelector(
+        (state: RootState) => state.breeds
+    );
+    const dispatch = useDispatch<AppDispatch>();
 
     useEffect(() => {
-        dispatch(fetchBreeds());
-        console.log('ooo', breeds)
+        dispatch(fetchBreeds(1));
     }, [dispatch]);
+
+    const handlePageChange = (page: number) => {
+        dispatch(fetchBreeds(page));
+    };
 
     return (
         <Box>
-            <AppBar position="static">
+            {/* AppBar */}
+            <AppBar position="static" sx={{ backgroundColor: "#ccc" }}>
+                {loading && <LinearProgress color="secondary" />}
                 <Toolbar>
                     <Typography variant="h6" component="div">
                         Dog Breeds
@@ -59,38 +32,30 @@ const App: React.FC = () => {
                 </Toolbar>
             </AppBar>
             <Container>
+                <Typography variant="h4" align="center" sx={{ marginTop: 3 }}>
+                    Dog Breeds
+                </Typography>
                 {loading ? (
-                    <Box textAlign="center" mt={4}>
+                    <Box textAlign="center" sx={{ marginTop: 3 }}>
                         <CircularProgress />
                     </Box>
                 ) : error ? (
-                    <Typography color="error" variant="h6" mt={4}>
+                    <Typography color="error" align="center" sx={{ marginTop: 3 }}>
                         {error}
                     </Typography>
                 ) : (
-
-                    <TableContainer component={Paper}>
-                        <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                            <TableHead>
-                                <TableRow>
-                                    <StyledTableCell>Breed name</StyledTableCell>
-                                    <StyledTableCell align="right">Description</StyledTableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {breeds.map((row) => (
-                                    <StyledTableRow key={row.id}>
-                                        <StyledTableCell component="th" scope="row">{row.attributes.name}</StyledTableCell>
-                                        <StyledTableCell component="th" scope="row">{row.attributes.description}</StyledTableCell>
-                                    </StyledTableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                    <>
+                        <BreedTable breeds={breeds} />
+                        <PaginationControl
+                            currentPage={pagination.currentPage}
+                            totalPages={pagination.totalPages}
+                            onPageChange={handlePageChange}
+                        />
+                    </>
                 )}
             </Container>
         </Box>
     );
 };
 
-export default App;
+export default Test2;
