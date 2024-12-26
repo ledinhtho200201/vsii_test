@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { Breed, BreedsState } from "../../type/breeds";
 import { getBreeds } from "../../services/api";
+import HTTP_CODE from "../../configs/httpCode";
 
 const initialState: BreedsState = {
     loading: false,
@@ -17,12 +18,22 @@ export const fetchBreeds = createAsyncThunk(
     async (page: number, { rejectWithValue }) => {
         try {
             const response = await getBreeds(page);
-            const { data, links } = response.data;
-            const totalPages = links.last
-                ? parseInt(links.last.split("page[number]=")[1], 10)
-                : 1;
-            return { breeds: data, currentPage: page, totalPages };
+            if (response && response.status === 200) {
+                const { data, links } = response.data;
+                const totalPages = links.last
+                    ? parseInt(links.last.split("page[number]=")[1], 10)
+                    : 1;
+                console.log("The request has been completed successfully");
+                return { breeds: data, currentPage: page, totalPages };
+            }
         } catch (error: any) {
+            if (error.response && error.response.status === 403) {
+                window.location.href = "/guest";
+                return rejectWithValue(HTTP_CODE[403]);
+            }
+            if (error.response?.status === 401) {
+                return rejectWithValue(HTTP_CODE[401]);
+            }
             return rejectWithValue("Failed to fetch breeds.");
         }
     }
@@ -47,6 +58,10 @@ const breedsSlice = createSlice({
             .addCase(fetchBreeds.rejected, (state, action: PayloadAction<any>) => {
                 state.loading = false;
                 state.error = action.payload;
+
+                if (action.payload === HTTP_CODE[401]) {
+                    window.location.href = "/login";
+                }
             });
     },
 });

@@ -5,16 +5,25 @@ import { AppDispatch, RootState } from "../redux/store";
 import BreedTable from "./BreedTable";
 import PaginationControl from "./PaginationControl";
 import { CircularProgress, Typography, Container, Box, AppBar, Toolbar, LinearProgress } from "@mui/material";
+import HTTP_CODE from "../configs/httpCode";
+import { useNavigate } from "react-router-dom";
 
 const Test2: React.FC = () => {
     const { loading, breeds, error, pagination } = useSelector(
         (state: RootState) => state.breeds
     );
     const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(fetchBreeds(1));
     }, [dispatch]);
+
+    useEffect(() => {
+        if (error === HTTP_CODE[401]) {
+            navigate("/login");
+        }
+    }, [error, navigate]);
 
     const handlePageChange = (page: number) => {
         dispatch(fetchBreeds(page));
@@ -40,9 +49,11 @@ const Test2: React.FC = () => {
                         <CircularProgress />
                     </Box>
                 ) : error ? (
-                    <Typography color="error" align="center" sx={{ marginTop: 3 }}>
-                        {error}
-                    </Typography>
+                    <Box>
+                        <Typography color="error" align="center" sx={{ marginTop: 3 }}>
+                            {error}
+                        </Typography>
+                    </Box>
                 ) : (
                     <>
                         <BreedTable breeds={breeds} />
